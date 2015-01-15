@@ -17,7 +17,7 @@ Adding to the database
 Dependencies
  1. PYHK (and its prerequisites)
  2. SQLAlchemy
- 3. PyQt
+ 3. PySide
  4. Pyperclip
 
 glhfdd

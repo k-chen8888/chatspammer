@@ -128,6 +128,7 @@ Library always starts in access mode
 WARNING: NEVER MAKE TWO LIBRARY OBJECTS SIMULTANEOUSLY!!
 '''
 class Library(object):
+	
 	# Initialize the library by supplying 1 argument; the other should always be default
 	def __init__(self, starting_app, hotkey_tool = None):
 		# Use a temporary dictionary to store quips
@@ -398,7 +399,7 @@ class Library(object):
 		
 		try:
 			# Need the name of the current category to perform keys_in_use() check
-			if(session.query(exists().where(Quips.keybinding == old_string)).scalar():
+			if session.query(exists().where(Quips.keybinding == old_string)).scalar():
 				quip = session.query(Quips).filter(Quips.keybinding == old_string).first()
 			
 			# Can change keys only if they were being used in the first place and new key combination is unused

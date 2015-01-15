@@ -4,6 +4,9 @@ import spammer_gui as gui
 # Import for database and library
 import quip_db as qdb
 
+# Hotkey tool
+import pyhk
+
 
 '''
 Main part of app
