@@ -16,8 +16,10 @@ Adding to the database
 
 Dependencies
  1. PYHK (and its prerequisites)
+  1. PyHook
+  2. pywin32
  2. SQLAlchemy
  3. PySide
  4. Pyperclip
 
-glhfdd
+<i>glhfdd</i>
