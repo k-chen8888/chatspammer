@@ -129,7 +129,7 @@ WARNING: NEVER MAKE TWO LIBRARY OBJECTS SIMULTANEOUSLY!!
 '''
 class Library(object):
 	# Initialize the library by supplying 1 argument; the other should always be default
-	def __init__(self, starting_app = "Edit", hotkey_tool = None):
+	def __init__(self, starting_app, hotkey_tool = None):
 		# Use a temporary dictionary to store quips
 		# Load a new dictionary every time you switch apps or modes
 		# Reload hotkeys every time you switch categories
@@ -145,21 +145,14 @@ class Library(object):
 		# Success flag for insert/delete
 		self.success = False
 		
-		# Set starting mode
-		if starting_app == "Edit":
-			self.output = False
-		else:
-			self.output = True
-		
 		# Load a library of chat commands
 		# Make sessions using self.Session() only when needed; close immediately after use
 		self.Session = sessionmaker(bind = engine)
 		
-		if self.output == True:
-			if self.hk == None:
-				print "Need a hotkey tool... load library manually after providing one"
-			else:
-				self.load_lib()
+		if self.hk == None:
+			print "Need a hotkey tool... load library manually after providing one"
+		else:
+			self.load_lib()
 	
 	# Load the library from the database
 	# Accepts hotkey tool as input
@@ -446,23 +439,16 @@ class Library(object):
 			# Report
 			return msg
 	
-	# Switch between output/edit modes
-	# Only input an app name if switching out of edit mode
-	# Only input a hotkey tool if switching between apps or switching out of edit mode
-	def mode_switch(self, starting_app = "Edit", hotkey_tool = None):
-		if self.output == False and starting_app == "Edit":
-			return "Invalid mode change; nothing will happen"
-		else:
-			if starting_app != "Edit" and hotkey_tool == None:
-				return "Need a hotkey tool to switch between apps or out of edit mode"
-			
-			self.lib = {}
-			self.lib['current_app'] = starting_app
-			
-			if starting_app == "Edit":
-				self.output = not self.output
-			else:
-				self.load_lib(hotkey_tool)
+	# Switch between apps
+	def app_switch(self, starting_app, hotkey_tool = None):
+		if hotkey_tool == None:
+			return "Need a hotkey tool to switch between apps or out of edit mode"
+		
+		self.lib = {}
+		self.lib['current_app'] = starting_app
+		
+		# Reload
+		self.load_lib(hotkey_tool)
 		
 		return "Now using '%s'" % starting_app
 	
