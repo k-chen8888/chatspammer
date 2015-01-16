@@ -18,18 +18,37 @@ Put everything else in tabs
 '''
 class MainWindow(QDeclarativeView):
 	
-	def __init__(self, starting_app = None, parent = None):
+	def __init__(self, parent = None):
 		super(MainWindow, self).__init__(parent)
 		self.setWindowTitle("Chat Spammer")
 		
-		# Initialize library (not ready for testing)
-		#self.lib = qdb.Library(starting_app, pyhk.pyhk())
+		# Set window size
+		self.resize(1000, 750)
+		
+		# Library
+		self.lib = None
 		
 		# Make the tab area
 		self.tab = Tab(self)
-		self.tab.addTab(QWidget(), "Main")
-		self.tab.addTab(QWidget(), "Main2")
+		
+		tempw = QWidget()
+		templ = QGridLayout()
+		print templ.rowCount()
+		print templ.columnCount()
+		tempw.setLayout(templ)
+		templ.addWidget(QLineEdit())
+		self.tab.addTab(tempw, "Main")
+		
+		# Display when done loading
 		self.tab.show()
+	
+	# Switches between selected apps
+	# Starts up the library if there was no previously selected app
+	def select_app(self, starting_app):
+		if self.lib == None:
+			self.lib = qdb.Library(starting_app, pyhk.pyhk())
+		else:
+			self.lib.app_switch(starting_app, self.lib.hk)
 '''
 End of MainWindow definition
 '''
@@ -43,6 +62,11 @@ class Tab(QTabWidget):
 	
 	def __init__(self, parent = None):
 		super(Tab, self).__init__(parent)
+		
+		# Arrange things in a grid
+		self.content = QGridLayout(self)
+		
+		self.resize(900, 700)
 '''
 End of Tab definition
 '''
@@ -56,8 +80,14 @@ Existing quips: Contains a textbox for the text and a textbox for keystrokes
 New quip: Contains a single empty textbox for text input and a single empty textbox for keystroke input
 	Make one of these after all quips are loaded
 '''
-class TabContent():
-	pass
+class TabContent(QRect):
+	
+	def __init__(self, parent = None):
+		super(TabContent, self).__init__(parent)
+		
+		# Set dimensions
+		self.setWidth(200)
+		self.setHeight(200)
 '''
 End of Tab Content definition
 '''
@@ -69,8 +99,11 @@ Run as main for testing only
 if __name__ == '__main__':
 	# Create Qt application and the QDeclarative view
 	app = QApplication(sys.argv)
-	window = MainWindow("MOBA")
+	window = MainWindow()
 	window.show()
+	
+	# Initialize library (not ready for testing)
+	#window.select_app("MOBA")
 	
 	# Enter Qt main loop
 	sys.exit(app.exec_())
